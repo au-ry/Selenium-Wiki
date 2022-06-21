@@ -6,37 +6,45 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class wait {
 
-    public static void main(String[] args) {
+    WebDriver driver;
+    @BeforeMethod
+    public void setUp() {
         System.setProperty("webdriver.chrome.driver", "C://chromedriver.exe");
-        WebDriver driver= new ChromeDriver();
+       driver= new ChromeDriver();
         driver.manage().window().maximize();
+    }
+        @Test
+        public void test1(){
 
-        driver.manage().timeouts().pageLoadTimeout(100, SECONDS);
 
-        driver.manage().timeouts().setScriptTimeout(100,SECONDS);
+            driver.get("https://the-internet.herokuapp.com/dynamic_loading/1");
 
-        driver.manage().timeouts().implicitlyWait(10, SECONDS);
-        
-        driver.get("https://the-internet.herokuapp.com/dynamic_loading/1");
+            WebElement btn = driver.findElement(By.xpath("//*[@id=\"start\"]/button"));
+            WebElement label = driver.findElement(By.xpath("//h4[.='Hello World!']"));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            btn.click();
+            WebElement load = driver.findElement(By.xpath("//*[@id=\"loading\"]"));
+           wait.until(ExpectedConditions.invisibilityOf(load));
+          System.out.println(label.getText());
+        }
 
-        WebElement btn = driver.findElement(By.xpath("/html[@class='no-js']/body/div[@class='row'][2]/div[@id='content']/div[@class='example']/div[@id='start']/button"));
-        WebElement label = driver.findElement(By.xpath("//h4[.='Hello World!']"));
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        btn.click();
-        WebElement mensaje = driver.findElement(By.xpath("/html[@class='no-js']/body/div[@class='row'][2]/div[@id='content']/div[@class='example']/div[@id='loading']/img/@src"));
-        wait.until(ExpectedConditions.invisibilityOf(mensaje));
-        System.out.println(label.getText());
+        @AfterMethod
+    public void tearDown(){
+        driver.quit();
+        }
 
 
 
 
     }
-}
+
