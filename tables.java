@@ -20,20 +20,26 @@ public class tables  {
             System.setProperty("webdriver.chrome.driver", "C://chromedriver.exe");
             driver= new ChromeDriver();
             driver.manage().window().maximize();
-            driver.get("https://demoqa.com/webtables");
+            driver.get("https://www.w3schools.com/html/html_tables.asp");
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         }
-        @Test
+        @Test(description = "encontrar numero de filas")
         public void test1() {
-            List<WebElement> nombre=driver.findElements(By.xpath("//div[@class='rt-tr']/div[@class='rt-th rt-resizable-header -cursor-pointer']/div[.='First Name']"));
-
+            List<WebElement> filas=driver.findElements(By.xpath("//*[@id=\"customers\"]/tbody/tr[2]/td[1]"));
+            int numfila = filas.size();
+            System.out.println("La cantidad de filas en esta tabla son :" +numfila);
         }
-
+    @Test(description = "encontrar numero de columnas")
+    public void test2() {
+        List<WebElement> columnas=driver.findElements(By.xpath("//*[@id=\"customers\"]/tbody/tr[2]/td[1]"));
+        int numcol = columnas.size();
+        System.out.println("La cantidad de filas en esta tabla son :" +numcol);
+    }
         @AfterMethod
         public void tearDown(){
 
-            //driver.quit();
+            driver.quit();
         }
     }
 
